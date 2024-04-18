@@ -48,6 +48,10 @@ def draw_blobby(canvas, obj):
     for segment in obj.segmentPos:
         circle(canvas, segment.x, segment.y, obj.radius, segment.color)
 
+def update_food(list):
+    for i in list:
+        i.floatMode()
+
 def update_canvas():
     global posX, posY, food, blobby
     C.delete("all")
@@ -55,6 +59,7 @@ def update_canvas():
     
     draw_blobby(C, blobby)
     draw_food(C, food, blobby)
+    update_food(food)
     blobby.update_segments()
     consume_food(blobby, food)
 

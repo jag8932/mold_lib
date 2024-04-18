@@ -7,6 +7,7 @@ class BlobbyMold:
     # timer if the mold doesn't find food. 
     health_status = 5 
     radius = 10
+    searchRadius = 100
     closestFoodPos = [0, 0]
     closestSegmentPos = [0, 0]
     generalPosition = [0, 0]
@@ -57,8 +58,10 @@ class BlobbyMold:
         return [math.cos(theta), math.sin(theta)]         
     
     def update_segments(self):
+        
         furthestSeg = self.furthest_segment()
         closestSeg = self.closest_segment()
         direction = self.unit_vector(closestSeg.x, closestSeg.y, self.closestFoodPos[0], self.closestFoodPos[1])
-        furthestSeg.moveTo(closestSeg.x + direction[0]*self.radius, closestSeg.y + direction[1]*self.radius)
-        self.generalPosition = [furthestSeg.x, furthestSeg.y]
+        if self.find_distance(self.generalPosition[0], self.generalPosition[1], self.closestFoodPos[0], self.closestFoodPos[1]) < self.searchRadius:
+            furthestSeg.moveTo(closestSeg.x + direction[0]*self.radius, closestSeg.y + direction[1]*self.radius)
+            self.generalPosition = [furthestSeg.x, furthestSeg.y]
