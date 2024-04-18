@@ -27,23 +27,39 @@ def circle(canvas,x, y, radius, color):
 
 def draw_food(canvas, list, obj):
     closest = obj.closest_food(list)
+    global linex, liney
     for f in list:
         if obj.find_distance(obj.position[0], obj.position[1], f.x, f.y) == closest:
             circle(canvas, f.x, f.y, 10, "blue")
+            linex = f.x
+            liney = f.y
+            vector = obj.unit_vector(obj.position[0], obj.position[1], linex, liney)
+            canvas.create_line(obj.position[0], obj.position[1], obj.position[0] + vector[0] * 50, obj.position[1]+ vector[1] * 50)
         else:
             circle(canvas, f.x, f.y, 10, "black")
-
+        
+def consume_food(obj, list):
+    for i in list:
+        if obj.find_distance(obj.generalPosition[0], obj.generalPosition[1], i.x, i.y) < obj.radius*2:
+            list.remove(i)
+            return
+    
 def draw_blobby(canvas, obj):
     for segment in obj.segmentPos:
-        circle(canvas, segment.x, segment.y, obj.radius, "red")
+        circle(canvas, segment.x, segment.y, obj.radius, segment.color)
 
 def update_canvas():
     global posX, posY, food, blobby
     C.delete("all")
-    C.create_rectangle(0, 0, 250, 300, fill="yellow")
+    C.create_rectangle(0, 0, 500, 500, fill="white")
     
     draw_blobby(C, blobby)
     draw_food(C, food, blobby)
+    blobby.update_segments()
+    consume_food(blobby, food)
+
+    if len(food) < 1:
+        spawn_food()
     C.after(100, update_canvas)
     
 
