@@ -65,7 +65,7 @@ def update_canvas():
 
     if len(food) < 1:
         spawn_food()
-    C.after(100, update_canvas)
+    C.after(50, update_canvas)
     
 
 

@@ -1,4 +1,4 @@
-import math;
+import math
 import random
 from segment import Segment
 
@@ -11,6 +11,7 @@ class BlobbyMold:
     closestFoodPos = [0, 0]
     closestSegmentPos = [0, 0]
     generalPosition = [0, 0]
+    
     def __init__(self, position, segments):
         self.position = position
         self.totalSegments = segments
@@ -18,6 +19,7 @@ class BlobbyMold:
         for i in range(self.totalSegments):
             i = Segment(self.position[0] + random.randint(1,3), self.position[1] + random.randint(1,3))
             self.segmentPos.append(i)
+        self.floatSpeed = self.multiply_scalar(2, self.unit_vector(self.position[0], self.position[1], random.randint(1, 499), random.randint(1, 499)))
 
     def find_distance(self, x1, y1, x2, y2):
         distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
@@ -57,6 +59,14 @@ class BlobbyMold:
         theta = math.atan2(legY, legX)        
         return [math.cos(theta), math.sin(theta)]         
     
+    def multiply_scalar(self, scalar,array):
+        productArray = []
+        for i in array:
+            i = i * scalar
+            productArray.append(i)
+        return productArray
+
+
     def update_segments(self):
         
         furthestSeg = self.furthest_segment()
